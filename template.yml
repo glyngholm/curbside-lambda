@@ -1,0 +1,58 @@
+# This is the SAM template that represents the architecture of your serverless application
+# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-template-basics.html
+
+# The AWSTemplateFormatVersion identifies the capabilities of the template
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/format-version-structure.html
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  curbside-serverless
+
+# Transform section specifies one or more macros that AWS CloudFormation uses to process your template
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/transform-section-structure.html
+Transform:
+- AWS::Serverless-2016-10-31
+
+# Resources declares the AWS resources that you want to include in the stack
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/resources-section-structure.html
+Resources:
+  # Each Lambda function is defined by properties:
+  # https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+
+  dashInterfaceFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: src/handlers/dashInterface.dashInterfaceHandler
+      Runtime: nodejs12.x
+      CodeUri: .
+      Description: >-
+        GET/Update for in-store dashboard from DynamoDB
+      MemorySize: 128
+      Timeout: 10
+      Role: 'arn:aws:iam::638381040808:role/service-role/lambda-apigateway-role'
+      Events:
+        HttpApiEvent:
+          Type: HttpApi
+          Properties:
+            Path: /dashboardInterface
+            Method: ANY
+      Tags:
+
+  twilioInterfaceFunction:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: src/handlers/twilioInterface.twilioInterfaceHandler
+      Runtime: nodejs12.x
+      CodeUri: .
+      Description: ''
+      MemorySize: 128
+      Timeout: 3
+      Role: >-
+        arn:aws:iam::638381040808:role/service-role/twilioInterface-role-7xwe064l
+      Events:
+        HttpApiEvent:
+          Type: HttpApi
+          Properties:
+            Path: /twilioInterface
+            Method: ANY
+
+

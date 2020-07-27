@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "curbside-lambda"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-wzv291mal1sa"
+s3_prefix = "curbside-lambda"
+region = "us-east-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+
